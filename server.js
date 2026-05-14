@@ -111,7 +111,8 @@ app.get('/api/redirect/:code', (req, res) => {
   res.redirect(301, entry.originalUrl);
 });
 
-app.use('/task1', express.static(path.join(task1Path, 'public')));
+// Serve Task 1 frontend
+app.use('/task1', express.static(task1Path));
 
 // ═══════════════════════════════════════════════════════
 // ── TASK 2: EVENT REGISTRATION ───────────────────────
