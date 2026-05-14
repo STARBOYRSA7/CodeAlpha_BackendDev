@@ -1,0 +1,54 @@
+{
+  "users": [],
+  "events": [
+    {
+      "id": "e1",
+      "title": "Tech Summit 2025",
+      "description": "Annual technology conference featuring keynotes, workshops, and networking.",
+      "date": "2026-05-21",
+      "time": "09:00",
+      "location": "Durban ICC, Durban",
+      "capacity": 200,
+      "category": "Conference",
+      "organizer": "CodeAlpha",
+      "createdAt": "2026-05-14T05:29:31.394Z"
+    },
+    {
+      "id": "e2",
+      "title": "Full Stack Workshop",
+      "description": "Hands-on workshop covering React, Node.js and deployment best practices.",
+      "date": "2026-05-28",
+      "time": "10:00",
+      "location": "Innovation Hub, Cape Town",
+      "capacity": 40,
+      "category": "Workshop",
+      "organizer": "CodeAlpha",
+      "createdAt": "2026-05-14T05:29:31.394Z"
+    },
+    {
+      "id": "e3",
+      "title": "Startup Pitch Night",
+      "description": "Watch the top 10 SA startups pitch to a panel of investors. Networking to follow.",
+      "date": "2026-06-04",
+      "time": "18:00",
+      "location": "Workshop17, Johannesburg",
+      "capacity": 80,
+      "category": "Networking",
+      "organizer": "CodeAlpha",
+      "createdAt": "2026-05-14T05:29:31.394Z"
+    },
+    {
+      "id": "e4",
+      "title": "AI & Machine Learning Bootcamp",
+      "description": "Three-day intensive on Python, scikit-learn, TensorFlow and real-world ML projects.",
+      "date": "2026-06-13",
+      "time": "08:30",
+      "location": "Online (Zoom)",
+      "capacity": 100,
+      "category": "Bootcamp",
+      "organizer": "CodeAlpha",
+      "createdAt": "2026-05-14T05:29:31.394Z"
+    }
+  ],
+  "registrations": []
+}

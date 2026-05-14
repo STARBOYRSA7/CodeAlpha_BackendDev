@@ -1,0 +1,19 @@
+{
+  "name": "codealpha-url-shortener",
+  "version": "1.0.0",
+  "description": "CodeAlpha Task 1 — URL Shortener with Express.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.2",
+    "lowdb": "^1.0.0",
+    "nanoid": "^3.3.6"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "author": "Sizwe Sigubudu"
+}

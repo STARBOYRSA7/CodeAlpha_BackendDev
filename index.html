@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeAlpha Backend — Sizwe Sigubudu</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #080810;
+  --surface: #0f0f1c;
+  --border: #1e1e32;
+  --text: #e8e8f8;
+  --muted: #565680;
+  --c1: #7c6af7;
+  --c2: #dc5a2a;
+  --c3: #c9973a;
+}
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+body::before { content:''; position:fixed; inset:0; background-image: radial-gradient(circle, rgba(124,106,247,0.06) 1px, transparent 1px); background-size: 36px 36px; pointer-events:none; z-index:0; }
+
+.wrap { position:relative; z-index:1; max-width:1060px; margin:0 auto; padding:0 32px; }
+
+nav { padding:24px 0; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); margin-bottom:0; }
+.logo { font-family:'Space Mono',monospace; font-size:18px; font-weight:700; color:#fff; }
+.logo em { color: var(--c1); font-style:normal; }
+.nav-links { display:flex; gap:16px; }
+.nav-links a { font-size:13px; color:var(--muted); text-decoration:none; font-weight:600; }
+.nav-links a:hover { color:var(--text); }
+
+.hero { text-align:center; padding:80px 0 64px; }
+.badge { display:inline-block; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--c1); border:1px solid rgba(124,106,247,0.3); background:rgba(124,106,247,0.08); padding:5px 18px; border-radius:100px; margin-bottom:28px; }
+.hero h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(40px,8vw,88px); font-weight:700; line-height:0.95; letter-spacing:-0.02em; color:#fff; margin-bottom:20px; }
+.hero h1 em { font-style:normal; -webkit-text-stroke:1px var(--c1); color:transparent; }
+.hero p { color:var(--muted); font-size:15px; font-weight:300; max-width:460px; margin:0 auto 16px; }
+
+.stack-pills { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:20px; }
+.pill { font-family:'Space Mono',monospace; font-size:11px; font-weight:700; padding:4px 14px; border-radius:100px; letter-spacing:0.06em; }
+.pill-green { background:rgba(76,175,120,0.12); color:#4caf78; border:1px solid rgba(76,175,120,0.25); }
+.pill-blue { background:rgba(91,155,213,0.12); color:#5b9bd5; border:1px solid rgba(91,155,213,0.25); }
+.pill-orange { background:rgba(220,90,42,0.12); color:#dc5a2a; border:1px solid rgba(220,90,42,0.25); }
+
+.divider { width:48px; height:1px; background:var(--border); margin:56px auto; }
+
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; padding-bottom:80px; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:36px; text-decoration:none; color:inherit; display:block; position:relative; overflow:hidden; transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+.card::after { content:''; position:absolute; inset:0; border-radius:18px; opacity:0; transition:opacity 0.3s; }
+.card:hover { transform:translateY(-6px); }
+.card-1::after { background:radial-gradient(circle at 20% 20%, rgba(124,106,247,0.1), transparent 55%); }
+.card-1:hover { border-color:rgba(124,106,247,0.5); box-shadow:0 20px 60px rgba(124,106,247,0.1); }
+.card-1:hover::after { opacity:1; }
+.card-2::after { background:radial-gradient(circle at 20% 20%, rgba(220,90,42,0.1), transparent 55%); }
+.card-2:hover { border-color:rgba(220,90,42,0.45); box-shadow:0 20px 60px rgba(220,90,42,0.1); }
+.card-2:hover::after { opacity:1; }
+.card-3::after { background:radial-gradient(circle at 20% 20%, rgba(201,151,58,0.1), transparent 55%); }
+.card-3:hover { border-color:rgba(201,151,58,0.45); box-shadow:0 20px 60px rgba(201,151,58,0.1); }
+.card-3:hover::after { opacity:1; }
+
+.task-num { position:relative; z-index:1; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:20px; }
+.card-1 .task-num { color:var(--c1); }
+.card-2 .task-num { color:var(--c2); }
+.card-3 .task-num { color:var(--c3); }
+
+.card-icon { position:relative; z-index:1; font-size:44px; display:block; margin-bottom:20px; }
+.card h2 { position:relative; z-index:1; font-size:26px; font-weight:700; color:#fff; margin-bottom:10px; letter-spacing:-0.02em; }
+.card p { position:relative; z-index:1; font-size:14px; color:var(--muted); line-height:1.75; font-weight:300; margin-bottom:24px; }
+
+.tags { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:6px; margin-bottom:28px; }
+.tag { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; padding:4px 11px; border-radius:100px; letter-spacing:0.06em; }
+.card-1 .tag { background:rgba(124,106,247,0.1); color:var(--c1); border:1px solid rgba(124,106,247,0.2); }
+.card-2 .tag { background:rgba(220,90,42,0.1); color:var(--c2); border:1px solid rgba(220,90,42,0.2); }
+.card-3 .tag { background:rgba(201,151,58,0.1); color:var(--c3); border:1px solid rgba(201,151,58,0.2); }
+
+.cta { position:relative; z-index:1; display:flex; align-items:center; gap:10px; font-family:'Space Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
+.card-1 .cta { color:var(--c1); }
+.card-2 .cta { color:var(--c2); }
+.card-3 .cta { color:var(--c3); }
+.arrow { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; transition:transform 0.2s; }
+.card-1 .arrow { background:rgba(124,106,247,0.15); }
+.card-2 .arrow { background:rgba(220,90,42,0.15); }
+.card-3 .arrow { background:rgba(201,151,58,0.15); }
+.card:hover .arrow { transform:translateX(4px); }
+
+.note-box { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px 28px; margin-bottom:32px; font-size:14px; color:var(--muted); line-height:1.8; }
+.note-box strong { color:var(--text); font-weight:600; }
+.note-box code { font-family:'Space Mono',monospace; font-size:12px; background:rgba(124,106,247,0.1); color:var(--c1); padding:2px 8px; border-radius:5px; }
+
+footer { border-top:1px solid var(--border); padding:32px 0; text-align:center; color:var(--muted); font-size:13px; }
+footer a { color:var(--c1); text-decoration:none; }
+
+@keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+.hero { animation:up 0.6s ease forwards; }
+.note-box { animation:up 0.6s 0.1s ease both; }
+.card { animation:up 0.6s ease both; opacity:0; }
+.card:nth-child(1){animation-delay:0.15s}.card:nth-child(2){animation-delay:0.25s}.card:nth-child(3){animation-delay:0.35s}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="logo"><em>Code</em>Alpha Backend</div>
+    <div class="nav-links">
+      <a href="https://github.com/STARBOYRSA7" target="_blank">GitHub</a>
+      <a href="mailto:sizwesigubudu7@gmail.com">Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="badge">Backend Development Internship · CodeAlpha</div>
+    <h1>THREE<br><em>BACKENDS</em></h1>
+    <p>Real Express.js APIs with JSON databases, REST endpoints, and full frontends.</p>
+    <div class="stack-pills">
+      <span class="pill pill-green">Node.js</span>
+      <span class="pill pill-blue">Express.js</span>
+      <span class="pill pill-orange">REST API</span>
+      <span class="pill pill-green">lowdb (JSON)</span>
+      <span class="pill pill-blue">JWT Auth</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="grid">
+    <a href="task1-urlshortener/public/index.html" class="card card-1">
+      <div class="task-num">Task 01</div>
+      <span class="card-icon">🔗</span>
+      <h2>URL Shortener</h2>
+      <p>Express.js API that generates short codes, tracks redirect counts, and supports custom aliases. Full click analytics per link.</p>
+      <div class="tags">
+        <span class="tag">Express.js</span>
+        <span class="tag">nanoid</span>
+        <span class="tag">lowdb</span>
+        <span class="tag">REST API</span>
+      </div>
+      <div class="cta">Open App <div class="arrow">→</div></div>
+    </a>
+
+    <a href="task2-events/public/index.html" class="card card-2">
+      <div class="task-num">Task 02</div>
+      <span class="card-icon">🎟</span>
+      <h2>Event Registration</h2>
+      <p>Full auth system with JWT. Users register for events, manage bookings, and cancel. Organisers create events with capacity limits.</p>
+      <div class="tags">
+        <span class="tag">Express.js</span>
+        <span class="tag">JWT Auth</span>
+        <span class="tag">bcryptjs</span>
+        <span class="tag">lowdb</span>
+      </div>
+      <div class="cta">Open App <div class="arrow">→</div></div>
+    </a>
+
+    <a href="task3-restaurant/public/index.html" class="card card-3">
+      <div class="task-num">Task 03</div>
+      <span class="card-icon">🍽</span>
+      <h2>Restaurant Manager</h2>
+      <p>Full restaurant backend — menu management, order processing, table reservations, inventory tracking, and daily sales reports.</p>
+      <div class="tags">
+        <span class="tag">Express.js</span>
+        <span class="tag">lowdb</span>
+        <span class="tag">REST API</span>
+        <span class="tag">Reports</span>
+      </div>
+      <div class="cta">Open App <div class="arrow">→</div></div>
+    </a>
+  </div>
+
+  <footer>
+    Sizwe Sigubudu · <a href="mailto:sizwesigubudu7@gmail.com">sizwesigubudu7@gmail.com</a> · CodeAlpha Backend Internship 2025
+  </footer>
+</div>
+</body>
+</html>

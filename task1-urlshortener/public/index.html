@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URLShort — CodeAlpha</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --text: #f0f0f8;
+  --muted: #6060a0;
+  --accent: #7c6af7;
+  --accent2: #a78bfa;
+  --green: #34d399;
+  --red: #f87171;
+  --glow: rgba(124,106,247,0.15);
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* Dot grid bg */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(124,106,247,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+/* NAV */
+nav {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+.logo { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: var(--accent); }
+.logo span { color: var(--text); }
+.hub-link { font-size: 13px; color: var(--muted); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+.hub-link:hover { color: var(--accent2); }
+
+/* HERO */
+.hero { text-align: center; padding: 64px 0 48px; }
+.hero-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--accent2);
+  border: 1px solid rgba(167,139,250,0.3);
+  background: rgba(124,106,247,0.08);
+  padding: 5px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+}
+.hero h1 { font-size: clamp(36px, 7vw, 72px); font-weight: 700; line-height: 1.05; margin-bottom: 16px; }
+.hero h1 em { font-style: normal; color: var(--accent2); }
+.hero p { color: var(--muted); font-size: 16px; font-weight: 400; }
+
+/* FORM */
+.shorten-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 40px;
+  box-shadow: 0 0 60px var(--glow);
+}
+
+.input-row { display: flex; gap: 12px; margin-bottom: 16px; }
+.url-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.url-input::placeholder { color: var(--muted); }
+.url-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,106,247,0.15); }
+
+.shorten-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.shorten-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+.shorten-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.advanced-toggle { font-size: 13px; color: var(--muted); cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 6px; }
+.advanced-toggle:hover { color: var(--accent2); }
+
+.advanced-row { margin-top: 14px; display: none; }
+.advanced-row.open { display: flex; gap: 12px; }
+.custom-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  color: var(--accent2);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.custom-input:focus { border-color: var(--accent); }
+
+/* RESULT */
+.result-box {
+  background: rgba(52,211,153,0.06);
+  border: 1px solid rgba(52,211,153,0.25);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-top: 18px;
+  display: none;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.result-box.show { display: flex; }
+.result-url { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; color: var(--green); flex: 1; word-break: break-all; }
+.copy-btn {
+  background: rgba(52,211,153,0.15);
+  border: 1px solid rgba(52,211,153,0.3);
+  color: var(--green);
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { background: rgba(52,211,153,0.25); }
+
+.error-box {
+  background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.3);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-top: 14px;
+  color: var(--red);
+  font-size: 14px;
+  display: none;
+}
+.error-box.show { display: block; }
+
+/* TABLE */
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.count-badge { background: var(--surface2); border-radius: 100px; padding: 3px 12px; font-size: 12px; color: var(--accent2); }
+
+.url-table { width: 100%; border-collapse: collapse; }
+.url-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.url-table td { padding: 14px; border-bottom: 1px solid rgba(42,42,58,0.5); font-size: 14px; vertical-align: middle; }
+.url-table tr:last-child td { border-bottom: none; }
+.url-table tbody tr { transition: background 0.15s; }
+.url-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.code-cell { font-family: 'Space Mono', monospace; color: var(--accent2); font-weight: 700; font-size: 13px; }
+.orig-cell { color: var(--muted); font-size: 12px; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clicks-cell { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--green); }
+.del-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
+.del-btn:hover { background: rgba(248,113,113,0.1); color: var(--red); }
+
+.empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 60px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 22px; border-radius: 100px; font-size: 14px; font-weight: 600; z-index: 999; transform: translateY(60px); opacity: 0; transition: all 0.3s; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@media(max-width:600px){ .input-row { flex-direction: column; } .advanced-row.open { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<div class="wrap">
+  <nav>
+    <div class="logo">URL<span>Short</span></div>
+    <a href="../../index.html" class="hub-link">← Back to Hub</a>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">Task 01 · URL Shortener · Express.js + JSON DB</div>
+    <h1>Shorten Any<br><em>URL Instantly</em></h1>
+    <p>Paste a long URL and get a clean, trackable short link.</p>
+  </div>
+
+  <div class="shorten-box">
+    <div class="input-row">
+      <input class="url-input" id="urlInput" type="url" placeholder="https://your-long-url.com/paste/here...">
+      <button class="shorten-btn" id="shortenBtn" onclick="shortenUrl()">Shorten →</button>
+    </div>
+    <span class="advanced-toggle" onclick="toggleAdvanced()">⚙ Custom alias</span>
+    <div class="advanced-row" id="advancedRow">
+      <input class="custom-input" id="customCode" placeholder="my-custom-alias" maxlength="20">
+    </div>
+    <div class="result-box" id="resultBox">
+      <span class="result-url" id="resultUrl"></span>
+      <button class="copy-btn" onclick="copyResult()">Copy</button>
+    </div>
+    <div class="error-box" id="errorBox"></div>
+  </div>
+
+  <div class="section-title">
+    Recent Links <span class="count-badge" id="countBadge">0</span>
+  </div>
+  <div class="table-wrap">
+    <table class="url-table">
+      <thead>
+        <tr>
+          <th>Short Code</th>
+          <th>Original URL</th>
+          <th>Clicks</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="urlTableBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🔗</div>
+      <p>No links yet. Shorten your first URL above.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+
+async function shortenUrl() {
+  const url = document.getElementById('urlInput').value.trim();
+  const customCode = document.getElementById('customCode').value.trim();
+  const btn = document.getElementById('shortenBtn');
+  const resultBox = document.getElementById('resultBox');
+  const errorBox = document.getElementById('errorBox');
+
+  resultBox.classList.remove('show');
+  errorBox.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Shortening...';
+
+  try {
+    const res = await fetch(`${API}/api/shorten`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, customCode: customCode || undefined })
+    });
+    const data = await res.json();
+    if (!res.ok) { errorBox.textContent = data.error; errorBox.classList.add('show'); return; }
+    document.getElementById('resultUrl').textContent = data.shortUrl;
+    resultBox.classList.add('show');
+    document.getElementById('urlInput').value = '';
+    document.getElementById('customCode').value = '';
+    loadUrls();
+  } catch (e) {
+    errorBox.textContent = 'Server unreachable. Make sure the backend is running.';
+    errorBox.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Shorten →';
+  }
+}
+
+async function loadUrls() {
+  try {
+    const res = await fetch(`${API}/api/urls`);
+    const urls = await res.json();
+    const tbody = document.getElementById('urlTableBody');
+    const empty = document.getElementById('emptyState');
+    document.getElementById('countBadge').textContent = urls.length;
+
+    if (!urls.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = urls.map(u => `
+      <tr>
+        <td class="code-cell"><a href="/${u.code}" target="_blank" style="color:inherit;text-decoration:none">${u.code}</a></td>
+        <td class="orig-cell" title="${u.originalUrl}">${u.originalUrl}</td>
+        <td class="clicks-cell">${u.clicks}</td>
+        <td style="color:var(--muted);font-size:12px">${new Date(u.createdAt).toLocaleDateString()}</td>
+        <td><button class="del-btn" onclick="deleteUrl('${u.code}')">🗑</button></td>
+      </tr>
+    `).join('');
+  } catch { }
+}
+
+async function deleteUrl(code) {
+  if (!confirm('Delete this short URL?')) return;
+  await fetch(`${API}/api/urls/${code}`, { method: 'DELETE' });
+  toast('Deleted');
+  loadUrls();
+}
+
+function copyResult() {
+  const url = document.getElementById('resultUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => toast('Copied to clipboard! 📋'));
+}
+
+function toggleAdvanced() {
+  document.getElementById('advancedRow').classList.toggle('open');
+}
+
+document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') shortenUrl(); });
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+loadUrls();
+</script>
+</body>
+</html>
