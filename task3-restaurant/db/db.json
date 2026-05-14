@@ -1,0 +1,73 @@
+{
+  "menu": [
+    {
+      "id": "m1",
+      "name": "Grilled Salmon",
+      "category": "Main",
+      "price": 25.99,
+      "available": true
+    },
+    {
+      "id": "m2",
+      "name": "Pasta Carbonara",
+      "category": "Main",
+      "price": 15.99,
+      "available": true
+    },
+    {
+      "id": "m3",
+      "name": "Caesar Salad",
+      "category": "Starter",
+      "price": 8.99,
+      "available": true
+    },
+    {
+      "id": "m4",
+      "name": "Cheesecake",
+      "category": "Dessert",
+      "price": 6.99,
+      "available": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "o1778740947450",
+      "items": [
+        {
+          "menuItemId": "m1",
+          "quantity": 1
+        },
+        {
+          "menuItemId": "m1",
+          "quantity": 1
+        }
+      ],
+      "tableId": "t1",
+      "total": null,
+      "status": "served",
+      "createdAt": "2026-05-14T06:42:27.450Z"
+    }
+  ],
+  "tables": [
+    {
+      "id": "t1",
+      "name": "Table 1",
+      "capacity": 2,
+      "status": "available"
+    },
+    {
+      "id": "t2",
+      "name": "Table 2",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "t3",
+      "name": "Table 3",
+      "capacity": 6,
+      "status": "available"
+    }
+  ],
+  "reservations": [],
+  "inventory": []
+}

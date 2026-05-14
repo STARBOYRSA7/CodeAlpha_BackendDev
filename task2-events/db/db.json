@@ -1,5 +1,14 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "u1778741127568",
+      "name": "sizwe sigubudu",
+      "email": "sizwesigubudu7@gmail.com",
+      "passwordHash": "$2a$10$7KG6POKeq2aBaNXNbEsw3ORVV1Gq6I8XClOCteVZ91lAXoWg3ivdm",
+      "role": "user",
+      "createdAt": "2026-05-14T06:45:27.568Z"
+    }
+  ],
   "events": [
     {
       "id": "e1",
