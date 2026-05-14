@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const { nanoid } = require('nanoid');
@@ -9,8 +10,18 @@ const { nanoid } = require('nanoid');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ── Auto-create db folder and db.json if they don't exist ────────────────────
+const dbDir = path.join(__dirname, 'db');
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
+const dbPath = path.join(dbDir, 'db.json');
+if (!fs.existsSync(dbPath)) {
+  fs.writeFileSync(dbPath, JSON.stringify({ urls: [], clicks: [] }));
+}
+
 // ── Database ──────────────────────────────────────────
-const adapter = new FileSync(path.join(__dirname, 'db/db.json'));
+const adapter = new FileSync(dbPath);
 const db = low(adapter);
 db.defaults({ urls: [], clicks: [] }).write();
 
@@ -27,6 +38,11 @@ function isValidUrl(str) {
 function getBaseUrl(req) {
   return process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
 }
+
+// ── Homepage ──────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // ── API Routes ────────────────────────────────────────
 
