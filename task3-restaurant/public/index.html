@@ -31,6 +31,28 @@
             display: flex; align-items: center; justify-content: space-between;
             position: sticky; top: 0; z-index: 100;
         }
+        .nav-left-group { display: flex; align-items: center; gap: 20px; }
+        
+        /* HUB BUTTON */
+        .hub-link {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .hub-link:hover {
+            background: var(--surface2);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         .logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--accent); cursor: pointer; letter-spacing: 0.02em; }
         .logo span { color: var(--text); }
         .nav-tabs { display: flex; gap: 4px; }
